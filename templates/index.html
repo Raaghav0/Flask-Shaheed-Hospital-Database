@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+
+    <title>Shaheed Hospital Database</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/shortcutico.jpg') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="google-site-verification" content="3fLok05gk5gGtWd_VSXbSSSH27F2kr1QqcxYz9vYq2k" />
+
+<style>
+    #RedBar { border: 3px solid red }
+    #GreenBar{border: 3px solid green}
+</style>
+
+</head>
+
+  {% block head %}
+
+    <div class="container" >
+         <div class="nav-bar" class="pull-left">
+             <a class="pull-left" href="#" >
+                 <img src="{{ url_for('static',filename='images/logo1.svg') }}">
+             </a>
+         </div>
+         <div class="nav-bar" class="pull-right">
+             <a class="pull-right" href="#" >
+                 <img src="{{ url_for('static',filename='images/contact.png') }}">
+             </a>
+         </div>
+     </div>
+    <div class="container">
+        <div class="nav-bar navbar-right  nav-pills">
+             <a class="btn-success btn-lg " href='#'>
+                <span class="glyphicon glyphicon-log-in"></span>
+                 Out patient
+            </a>
+            &nbsp;
+
+            <a class="btn-success btn-lg " href='/login/'>
+                <span class="glyphicon glyphicon-log-in"></span>
+                 Log in &nbsp;
+            </a>
+            &nbsp;
+
+             <a class="btn-success btn-lg " href='/signup/'>
+                <span class="glyphicon glyphicon-registration-mark"></span>
+                 Sign up
+            </a>
+
+        </div>
+    </div>
+  <br>
+
+ <div class="row" id="RedBar" ></div>
+ <div class="row" id="GreenBar"></div>
+
+{% endblock %}
+<body>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+
+</body>
+</html>
