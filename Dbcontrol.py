@@ -19,6 +19,10 @@ def signup():
 @app.route('/outpatient/addpatient/')
 def addpatient():
     return render_template("addpatient.html")
+@app.route('/outpatient/')
+def outpatient():
+    return render_template("outpatient.html")
+
     
 if __name__ == '__main__':
     app.run(debug=True)
