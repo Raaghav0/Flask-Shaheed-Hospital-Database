@@ -1,23 +1,29 @@
-<<!DOCTYPE html>
-{% extends "header.html" %}
+<!DOCTYPE html>
+{% extends "header1.html" %}
 {% block body %}
+<style>
+    #RedBar { border: 3px solid red }
+    #GreenBar{outline: 3px solid green;margin:-18px}
+</style>
 
+
+
+ <div class="row" id="RedBar" ></div>
+ <div class="row" id="GreenBar"></div>
+
+
+<link rel="stylesheet" href="/static/css/materialize.min.css">
 <br>
 <br>
 <div class="container" style="max-width:1500px; min-height:100%">
-
-
-
-
-
-
+  <div class="jumbotron">
 	<div class="row">
 	<!-- size 4 on a large screen, 12 on a small, 6 on a med -->
 		<div class="col l4 s12 m6">
 			<a href="/outpatient/addpatient/" class="waves-effect waves-light" style="color:#000">
-			<div class="card-panel hoverable" style="height:360px; background-color:#FFFFFF;">
+			<div class="card-panel hoverable" style="height:360px; ">
 				<div class="card-image">
-				  <img class="responsive-img" src="{{ url_for('static', filename='images/shortcutico.jpg') }}" style="width:250px">
+				  <img class="responsive-img" src="{{ url_for('static', filename='images/patientpic.jpg') }}" style="width:250px">
 				  <br><span class="card-title"><strong>Add Patient</strong></span>
 				</div>
 				<div class="card-content">
@@ -25,15 +31,31 @@
 
 				</div>
 				<div class="card-action right-align">
-				  <a href="/data-analysis-tutorials/" class="waves-effect waves-light btn" style="color:#000000; background-color:#FFD166">View</a>
+				  <a href="/outpatient/addpatient/" class="waves-effect waves-light btn" style="color:#000000; background-color:#FFD166">View</a>
 				</div>
             </div>
             </a>
 		</div>
 
+		<div class="col l4 s12 m6">
+			<a href="/outpatient/viewpatient/" class="waves-effect waves-light" style="color:#000">
+			<div class="card-panel hoverable" style="height:360px; ">
+				<div class="card-image">
+				  <img class="responsive-img" src="{{ url_for('static', filename='images/dbase.jpg') }}" style="width:250px">
+				  <br><span class="card-title"><strong>List of Patients</strong></span>
+				</div>
+				<div class="card-content">
+				  <p>Click Here To View Database of Patients</p>
 
-        
-    </div>
+				</div>
+				<div class="card-action right-align">
+				  <a href="/outpatient/viewpatient/" class="waves-effect waves-light btn" style="color:#000000; background-color:#FFD166">View</a>
+				</div>
+            </div>
+            </a>
+		</div>
+	</div>
+  </div>
 </div>
 
 
