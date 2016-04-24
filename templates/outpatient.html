@@ -1,0 +1,40 @@
+<<!DOCTYPE html>
+{% extends "header.html" %}
+{% block body %}
+
+<br>
+<br>
+<div class="container" style="max-width:1500px; min-height:100%">
+
+
+
+
+
+
+	<div class="row">
+	<!-- size 4 on a large screen, 12 on a small, 6 on a med -->
+		<div class="col l4 s12 m6">
+			<a href="/outpatient/addpatient/" class="waves-effect waves-light" style="color:#000">
+			<div class="card-panel hoverable" style="height:360px; background-color:#FFFFFF;">
+				<div class="card-image">
+				  <img class="responsive-img" src="{{ url_for('static', filename='images/shortcutico.jpg') }}" style="width:250px">
+				  <br><span class="card-title"><strong>Add Patient</strong></span>
+				</div>
+				<div class="card-content">
+				  <p>Click Here To Add A  Patient</p>
+
+				</div>
+				<div class="card-action right-align">
+				  <a href="/data-analysis-tutorials/" class="waves-effect waves-light btn" style="color:#000000; background-color:#FFD166">View</a>
+				</div>
+            </div>
+            </a>
+		</div>
+
+
+        
+    </div>
+</div>
+
+
+{% endblock %}
