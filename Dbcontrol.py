@@ -1,139 +1,152 @@
-from sqlite3 import dbapi2 as sqlite3
 from flask import Flask,request,session,g,redirect,url_for,abort,render_template,flash,get_flashed_messages
 from contextlib import closing
 import os
+import MySQLdb
+from MySQLdb import escape_string as thwart
 app=Flask(__name__)
+app.secret_key="ABCD123"
+from wtforms import Form , TextAreaField , PasswordField , validators
+from passlib import hash
 
-app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'flaskr.db'),
-    DEBUG=True,
-    SECRET_KEY='development key',
-    USERNAME='admin',
-    PASSWORD='default'
-))
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)
-
+def connection():
+    conn=MySQLdb.Connect(host="localhost",user="root",passwd="root",db="MYDB")
+    c=conn.cursor()
+    return c,conn
 
 
+c, conn = connection()
 
 
-def connect_db():
-    """Connects to the specific database."""
-    rv = sqlite3.connect(app.config['DATABASE'])
-    rv.row_factory = sqlite3.Row
-    return rv
-def get_db():
-    """Opens a new database connection if there is none yet for the
-    current application context.
-    """
-    if not hasattr(g, 'sqlite_db'):
-        g.sqlite_db = connect_db()
-    return g.sqlite_db
-
-
-#def init_db():
-'''with app.app_context():
-        db = get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()'''
-
-
-
-
-
-
-
-
-
-@app.teardown_appcontext
-def close_db(error):
-    """Closes the database again at the end of the request."""
-    if hasattr(g, 'sqlite_db'):
-        g.sqlite_db.close()
-
-
-class database:
-
-    name=""
-    email=""
-    password=""
-    phone_no=""
-    Designation=""
-d= []
-
+class RegistrationForm(Form):
+    username = TextAreaField('Username', [validators.Length(min=4, max=20)])
+    email = TextAreaField('Email Address', [validators.Length(min=6, max=50)])
+    password = PasswordField('New Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match'),validators.Length(min=5 ,max=20)
+    ])
+    confirm = PasswordField('Repeat Password')
+    Designation = TextAreaField('Designation',[validators.DataRequired()])
+    PhNumber = TextAreaField('Phone number',[validators.DataRequired()])
 
 @app.route('/')
 def index():
+    session['invalid']=False
     return render_template("index.html")
 
 @app.route('/login/')
 def login():
+    print session['invalid']
+    if(session['invalid'] == True):
+        flash("Invalid credentials")
+    return render_template("login.html")
+
+
+@app.route('/loggedin/',methods=["GET","POST"])
+def loggedin():
+    error = ''
+    try:
+        c, conn = connection()
+        if request.method == "POST":
+
+            data = c.execute("SELECT * FROM entries WHERE Username = '%s' " % thwart(request.form['username']))
+
+            data = c.fetchone()[2]
+
+            if hash.sha256_crypt.verify(request.form['password'], data):
+                session['logged_in'] = True
+
+                session['username'] = request.form['username']
+                print session['username']
+
+
+                return redirect(url_for("outpatient"))
+
+            else:
+                session['invalid']=True
+                return redirect(url_for("login"))
+
+    except Exception as e:
+        # flash(e)
+        error = "Invalid credentials, try again."
+        return render_template("login.html", error=error)
+
 
     return render_template("login.html")
+
+@app.route('/loggedout/',methods=["GET","POST"])
+def loggedout():
+    session['logged_in']=False
+    session['invalid']=False
+    session.pop('username','password')
+    return render_template("index.html")
 
 @app.route('/signup/')
 def signup():
- return render_template("signup.html")
+    form = RegistrationForm(request.form)
+    return  render_template("signup.html",form=form)
 
 
 
 
-@app.route('/signedup/',methods=['POST'])
+@app.route('/signedup/',methods=["GET","POST"])
 def signedup():
-        # if not session.get('logged_in'):
-        #abort(401)
+    try:
+        form = RegistrationForm(request.form)
+
+        if request.method == "POST" and form.validate():
+            username = str(form.username.data)
+
+            email = str(form.email.data)
+            password = str(hash.sha256_crypt.encrypt((str(form.password.data))))
+            Designation=str(form.Designation.data)
+            PhNumber=str(form.PhNumber.data)
+            c, conn = connection()
 
 
 
+            x=c.execute("SELECT * FROM entries WHERE Username = '%s' " % (thwart(username)))
 
 
-    temp=database()
-    temp.name =request.form["Name"]
-    temp.password=request.form["pwd"]
-    temp.Designation=request.form["designation"]
-    temp.phone_no=request.form["pno"]
-    temp.email=request.form["email"]
-    db.execute('insert into entries (name, emailid, password, Designation, phone_no) values (?, ?, ?, ?, ?)',
-               [request.form["Name"],request.form["email"],request.form["pwd"] ,request.form["designation"],request.form["pno"]])
-    db.commit()
-    d.append(temp)
-    #  print(db[0])
+            if int(x) > 0:
+                flash("That username is already taken, please choose another")
+                return render_template('signup.html', form=form)
+
+            else:
+                c.execute("INSERT INTO entries (Username,Password,Email,Designation,PhoneNumber) VALUES (%s, %s, %s, %s,%s);",
+                          (thwart(username),thwart(password),thwart(email),thwart(Designation),thwart(PhNumber)
+                           ))
 
 
+                conn.commit()
 
-    return redirect(url_for('login'))
-
-@app.route('/loggedin/',methods=['POST'])
-def loggedin():
-    if request.form['username']==d[0].name and request.form['pwd']==d[0].password:
-        return render_template("index.html")
-    return render_template("login.html")
+                flash("Thanks for registering!")
+                c.close()
+                conn.close()
 
 
+                session['logged_in'] = True
+                session['username'] = username
 
+                return redirect(url_for('outpatient'))
 
+        return render_template("signup.html", form=form)
+
+    except Exception as e:
+        return (str(e))
 
 @app.route('/outpatient/')
 def outpatient():
-    return render_template("outpatient.html")
+    if session['logged_in']:
+        return render_template("outpatient.html")
+    if(not session['logged_in']):
+        flash("You must log in to view this page")
+        return redirect(url_for("login"))
+
 @app.route('/outpatient/addpatient/')
 def addpatient():
     return render_template("addpatient.html")
 
-@app.route('/show/')
-def show_entries():
-
-    cur = g.db.execute('select name, password from entries order by id desc')
-    entries = [dict(title=row[0], text=row[2]) for row in cur.fetchall()]
-    return render_template('show_entries.html', entries=entries)
 
 if __name__ == '__main__':
-   #init_db()
-   with app.app_context():
-        db = get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
    app.run(debug=True)
 

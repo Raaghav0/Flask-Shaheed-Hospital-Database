@@ -18,11 +18,11 @@
 
 </head>
 
-
+  {% block head %}
 
     <div class="container" >
          <div class="nav-bar" class="pull-left">
-             <a class="pull-left" href="#" >
+             <a class="pull-left" href='/' >
                  <img src="{{ url_for('static',filename='images/logo1.svg') }}">
              </a>
          </div>
@@ -58,12 +58,10 @@
  <div class="row" id="RedBar" ></div>
  <div class="row" id="GreenBar"></div>
 
-
+{% endblock %}
 <body>
-
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
 
 
 </body>

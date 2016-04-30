@@ -31,7 +31,7 @@
                  Out patient
             </a>
             &nbsp;
-
+            {% if not session['logged_in'] %}
             <a class="btn-success btn-lg " href='/login/'>
                 <span class="glyphicon glyphicon-log-in"></span>
                  Log in &nbsp;
@@ -42,6 +42,13 @@
                 <span class="glyphicon glyphicon-registration-mark"></span>
                  Sign up
             </a>
+            {% else %}
+               <a class="btn-success btn-lg " href="/loggedout/">
+                <span class="glyphicon glyphicon-log-out"></span>
+                 Log out &nbsp;
+            </a>
+            {% endif %}
+
 
         </div>
     </div>

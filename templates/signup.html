@@ -9,35 +9,23 @@
         <text class="header"><em><b> CREATE A NEW ACCOUNT </b></em> </text>
         <br>
         <br>
+        {% from "_formhelpers.html" import render_field %}
+		<form method="post" action='/signedup/'>
+			<dl>
+				{{render_field(form.username)}}
+				{{render_field(form.email)}}
+				{{render_field(form.password)}}
+				{{render_field(form.confirm)}}
+				{{render_field(form.Designation)}}
+                {{render_field(form.PhNumber)}}
+			</dl>
+		  <button type="submit" class="btn btn-info center-block" >Sign up</button>
+		</form>
 
+		{% if error %}
+			<p class="error"><strong>Error:</strong>{{error}}</p>
+		{% endif %}
 
-        <form role="form">
-            <div class="form-group">
-                <label > Name </label>
-                <textarea class="form-control" name="Name" rows="1" cols="2" placeholder="Enter your name "></textarea>
-            </div>
-            <div class="form-group">
-                <label> Email address
-                   <textarea class="form-control" name="email" rows="1" cols="120px" placeholder="Enter your email"></textarea>
-                </label>
-            </div>
-            <div class="form-group">
-                <label for="pwd">Password</label>
-                <textarea class="form-control" name="pwd" rows="1" cols="100px" placeholder="Password" ></textarea>
-            </div>
-            <div class="form-group">
-                <label > Designation </label>
-                  <textarea class="form-control" name="designation" rows="1" cols="100px" placeholder="Designation"></textarea>
-
-            </div>
-            <div class="form-group">
-                <label >Phone number</label>
-                <textarea class="form-control" name="pno" rows="1" cols="100px" placeholder="Phone number"></textarea>
-            </div>
-
-         <button type="submit" class="btn btn-info center-block" >Sign up</button>
-
-        </form>
     </div>
 </div>
 {% endblock %}
