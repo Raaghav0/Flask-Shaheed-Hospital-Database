@@ -1,1 +1,5 @@
  create table outpatients ( ID INT AUTO_INCREMENT PRIMARY KEY,NAME TEXT NOT NULL,PARENT TEXT NOT NULL,EDUCATION TEXT NOT NULL,AGE INT ,SEX BOOLEAN,PLACE TEXT NOT NULL,PHONE TEXT NOT NULL, DINANK DATE, TIMES TIME,APM BOOLEAN);
+
+c.execute("INSERT INTO outpatients (NAME,PARENT,EDUCATION,AGE,SEX, PLACE,PHONE, DINANK,TIMES, APM) VALUES (%s, %s, %s, %d,%s,%s,%s,%s,%s,%s);",
+              (thwart(username), thwart(password), thwart(email), thwart(Designation), thwart(PhNumber)
+               ))
