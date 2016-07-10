@@ -5,23 +5,23 @@
 
     <div class="col-lg-3"></div>
     <div class="jumbotron" class="col-lg-6">
-            <form role="form">
+            <form method="post" action='/patientadd/' >
                 <div class="form-group">
-                    <label for="usr">नाम</label>
-                    <input class="form-control input-sm" type="text" id="usr" placeholder="name" maxlength="50" cols="15">
+                    <label >नाम</label>
+                    <input class="form-control input-sm" type="text" name="usr" placeholder="name" maxlength="50" cols="15">
                 </div>
                 <div class="form-group">
-                    <label for="parentname">पिता या माता का नाम</label>
-                    <textarea class="form-control input-sm" type="text" id="parentname" placeholder="parent's name" maxlength="50" cols="15"></textarea>
+                    <label >पिता या माता का नाम</label>
+                    <textarea class="form-control input-sm" type="text" name="parentname" placeholder="parent's name" maxlength="50" cols="15"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="educat">शिक्षा</label>
-                    <input class="form-control input-sm" type="text" id="educat" placeholder="name" maxlength="50" cols="15">
+                    <label >शिक्षा</label>
+                    <input class="form-control input-sm" type="text" name ="educat" placeholder="name" maxlength="50" cols="15">
                 </div>
 
                 <div>
                     उम्र:
-                    <textarea cols="30" rows="1" id="age" placeholder="उम्" maxlength="3"></textarea>
+                    <textarea cols="30" rows="1" name="age" placeholder="उम्" maxlength="3"></textarea>
                     &nbsp;
                     &nbsp;
                     स्त्री या पुरूस:
@@ -30,37 +30,37 @@
                     <input type="radio" name="o1" value="female"> स्त्री
                     &nbsp;
                     &nbsp;
-                    <input type="radio" name="o2" value="male">पुरुष
+                    <input type="radio" name="o1" value="male">पुरुष
 
                 </div>
                 <br>
                 <br>
                 <div class="form-group">
-                    <label for="address">स्थान</label>
+                    <label >स्थान</label>
                     <br>
-                    <textarea cols="100" rows="5" id="address" placeholder="स्थान"></textarea>
+                    <textarea cols="100" rows="5" name="address" placeholder="स्थान"></textarea>
                 </div>
                 <div>
-                    <label for="phno">Phone Number</label>
-                    <textarea cols="30" rows="1" id="phno" placeholder="mobile no:" maxlength="13"></textarea>
+                    <label >Phone Number</label>
+                    <textarea cols="30" rows="1" name="phno" placeholder="mobile no:" maxlength="13"></textarea>
                     &nbsp;
                     &nbsp;
                     &nbsp;
                     &nbsp;
-                    <label for="date">दिनांक</label>
-                    <textarea cols="20" rows="1" id="date" placeholder="DD/MM/YYYY" maxlength="11"></textarea>
+                    <label >दिनांक</label>
+                    <textarea cols="20" rows="1" name="date" placeholder="DD/MM/YYYY" maxlength="11"></textarea>
                     &nbsp;
                     &nbsp;
                     &nbsp;
                     &nbsp;
                     <b>समय:</b>
-                    <textarea cols="20" rows="1" id="time" placeholder="HH/MM:" maxlength="6"></textarea>
+                    <textarea cols="20" rows="1" name="time" placeholder="HH/MM:" maxlength="6"></textarea>
                     &nbsp;
                     &nbsp;
 
 
-                    <input type="radio" name="am" value="am">A.M. &nbsp;&nbsp;
-                    <input type="radio" name="pm" value="pm">P.M.
+                    <input type="radio" name="apm" value="am">A.M. &nbsp;&nbsp;
+                    <input type="radio" name="apm" value="pm">P.M.
                      <br>
                     <br>
                     <br>

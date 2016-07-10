@@ -4,9 +4,11 @@ import os
 import MySQLdb
 from MySQLdb import escape_string as thwart
 app=Flask(__name__)
-app.secret_key="ABCD123"
+app.secret_key="ABCD123"    
 from wtforms import Form , TextAreaField , PasswordField , validators
 from passlib import hash
+from xhtml2pdf import pisa
+from cStringIO import StringIO
 
 def connection():
     conn=MySQLdb.Connect(host="localhost",user="root",passwd="root",db="MYDB")
@@ -94,9 +96,9 @@ def signedup():
         form = RegistrationForm(request.form)
 
         if request.method == "POST" and form.validate():
-            username = str(form.username.data)
 
             email = str(form.email.data)
+            username = str(form.username.data)
             password = str(hash.sha256_crypt.encrypt((str(form.password.data))))
             Designation=str(form.Designation.data)
             PhNumber=str(form.PhNumber.data)
@@ -146,7 +148,52 @@ def outpatient():
 def addpatient():
     return render_template("addpatient.html")
 
+@app.route('/patientadd/',methods=['POST','GET'])
+def patientadd():
+
+    c,conn = connection()
+
+    c.execute(
+        "INSERT INTO outpatients (NAME,PARENT,EDUCATION,AGE,SEX, PLACE,PHONE, DINANK,TIMES, APM) VALUES (%s, %s, %s, %s,%s,%s,%s,%s,%s,%s);",
+        (thwart(request.form['usr']), thwart(request.form['parentname']), thwart(request.form['educat']),
+         thwart(request.form['age']),
+         thwart(request.form['o1']), thwart(request.form['address']), thwart(request.form['phno']),
+                thwart(request.form['date']), thwart(request.form['time']), thwart(request.form['apm'])
+         ))
+
+    conn.commit()
+    conn.close()
+    c.close()
+    flash("patient added to database")
+    return redirect(url_for("outpatient"))
+
+@app.route('/outpatient/viewpatient/')
+def viewpatient():
+    return render_template("viewpatient.html")
+@app.route('/patientsearch/',methods=["GET","POST"])
+def patientsearch():
+    c,conn =connection()
+    c.execute("SELECT * FROM outpatients WHERE NAME LIKE %s ", ("%" + request.form['pat'] + "%",))
+    data=c.fetchall()
+    return render_template("viewpatient.html",data=data)
+@app.route('/printpatient/',methods=["POST"])
+def printpatient():
+    str1 =request.form['submit']
+    str2 = ""
+    for i in str1:
+        if(i==" "):
+            break
+        str2=str2 + i
+    id_toprint=int(str2)
+    c, conn = connection()
+    c.execute("SELECT * FROM outpatients WHERE ID = %d " %id_toprint)
+    data_toprint=c.fetchall()
+    i=data_toprint[0];
+    return render_template("print_template.html",i=i)
+
+
 
 if __name__ == '__main__':
    app.run(debug=True)
+   session['logged_in']=False
 
