@@ -32,6 +32,7 @@ class RegistrationForm(Form):
 
 @app.route('/')
 def index():
+    session['logged_in'] = False
     session['invalid']=False
     return render_template("index.html")
 
@@ -195,5 +196,4 @@ def printpatient():
 
 if __name__ == '__main__':
    app.run(debug=True)
-   session['logged_in']=False
 
